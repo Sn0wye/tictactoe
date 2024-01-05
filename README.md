@@ -1,30 +1,57 @@
-# React + TypeScript + Vite
+# Tic Tac Toe
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a Tic Tac Toe web app developed with React and Vite.
 
-Currently, two official plugins are available:
+## Prerequisites
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Before you begin, ensure you have `pnpm` installed on your system. If you do not have `pnpm` installed, you can install it globally using npm with the following command:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```sh
+npm install -g pnpm
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## 1. Clone the Repository
+
+First, clone the project repository to your computer using Git or Github CLI:
+
+```sh
+gh repo clone Sn0wye/tictactoe
+
+OR
+
+git clone https://github.com/Sn0wye/tictactoe
+```
+
+## 2. Navigate to the Project Directory
+
+Once cloned, navigate to the project directory:
+
+```sh
+cd tictactoe
+```
+
+## 3. Install Depencencies
+
+Inside the project directory, run the following command to install all necessary dependencies:
+
+```sh
+pnpm i
+```
+
+This command will download and install all the libraries and packages needed for the project.
+
+# Running the App
+
+After installing the dependencies, you are ready to run the app in your local development environment:
+
+## Start the Development Server
+
+Execute the following command to start the development server:
+
+```sh
+pnpm dev
+```
+
+## Access the App
+
+Open your web browser and go to [localhost:3000](http://localhost:3000). You will see the Tic Tac Toe game running and ready to play.
