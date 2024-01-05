@@ -55,3 +55,17 @@ pnpm dev
 ## Access the App
 
 Open your web browser and go to [localhost:3000](http://localhost:3000). You will see the Tic Tac Toe game running and ready to play.
+
+# Multiplayer version
+
+## 1. Checkout to multiplayer branch
+
+```sh
+git checkout multiplayer
+```
+
+## 2. Run the dev script
+
+```sh
+pnpm dev
+```
