@@ -13,14 +13,22 @@ type MySocket = Socket<ServerToClientEvents, ClientToServerEvents>;
 const getSocket = () => {
   const socket: MySocket = io('http://localhost:8080');
 
-  socket.onAny((event, ...args) => {
-    console.log(event, args);
-  });
-
   return socket;
 };
 
 const initialBoard: Array<Square> = Array(9).fill(null);
+
+const cellBorders = [
+  'border-r border-b',
+  'border-l border-r border-b',
+  'border-l border-b',
+  'border-t border-r border-b',
+  'border',
+  'border-t border-b border-l',
+  'border-t border-r',
+  'border-t border-l border-r',
+  'border-t border-l'
+];
 
 export function App() {
   const [board, setBoard] = useState(initialBoard);
@@ -69,7 +77,7 @@ export function App() {
           </h1>
         )}
         {isGameOver && !isDraw && (
-          <h1 className='text-4xl text-zinc-100 flex items-center h-12  gap-2'>
+          <h1 className='text-4xl text-zinc-100 flex items-center h-12 gap-2'>
             {winner === player ? 'You won' : 'You lost'}
           </h1>
         )}
@@ -88,12 +96,12 @@ export function App() {
         )}
       </header>
 
-      <div className='grid grid-cols-3 gap-5'>
+      <div className='grid grid-cols-3'>
         {board.map((tile, idx) => (
           <div
             key={idx}
             onClick={() => handleClick(idx)}
-            className='w-[200px] h-[200px] border-2 border-zinc-100 rounded-xl flex items-center justify-center cursor-pointer'
+            className={`w-[200px] h-[200px] border-zinc-100 flex items-center justify-center cursor-pointer ${cellBorders[idx]}`}
           >
             {tile === 'X' ? <Cross /> : tile === 'O' ? <Circle /> : null}
           </div>
