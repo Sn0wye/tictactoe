@@ -6,6 +6,18 @@ type Square = Player | null;
 
 const initialBoard: Array<Square> = Array(9).fill(null);
 
+const cellBorders = [
+  'border-r border-b border-zinc-100',
+  'border-l border-r border-b border-zinc-100',
+  'border-l border-b border-zinc-100',
+  'border-t border-r border-b border-zinc-100',
+  'border border-zinc-100',
+  'border-t border-b border-l border-zinc-100',
+  'border-t border-r border-zinc-100',
+  'border-t border-l border-r border-zinc-100',
+  'border-t border-l border-zinc-100'
+];
+
 export function App() {
   const [board, setBoard] = useState(initialBoard);
   const [turn, setTurn] = useState<Player>('X');
@@ -107,12 +119,12 @@ export function App() {
         )}
       </header>
 
-      <div className='grid grid-cols-3 gap-5'>
+      <div className='grid grid-cols-3'>
         {board.map((tile, idx) => (
           <div
             key={idx}
             onClick={() => handleClick(idx)}
-            className='w-[200px] h-[200px] border-2 border-zinc-100 rounded-xl flex items-center justify-center cursor-pointer'
+            className={`w-[200px] h-[200px] flex items-center justify-center cursor-pointer ${cellBorders[idx]}`}
           >
             {tile === 'X' ? <Cross /> : tile === 'O' ? <Circle /> : null}
           </div>
