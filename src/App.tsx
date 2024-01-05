@@ -7,15 +7,15 @@ type Square = Player | null;
 const initialBoard: Array<Square> = Array(9).fill(null);
 
 const cellBorders = [
-  'border-r border-b border-zinc-100',
-  'border-l border-r border-b border-zinc-100',
-  'border-l border-b border-zinc-100',
-  'border-t border-r border-b border-zinc-100',
-  'border border-zinc-100',
-  'border-t border-b border-l border-zinc-100',
-  'border-t border-r border-zinc-100',
-  'border-t border-l border-r border-zinc-100',
-  'border-t border-l border-zinc-100'
+  'border-r border-b',
+  'border-l border-r border-b',
+  'border-l border-b',
+  'border-t border-r border-b',
+  'border',
+  'border-t border-b border-l',
+  'border-t border-r',
+  'border-t border-l border-r',
+  'border-t border-l'
 ];
 
 export function App() {
@@ -124,7 +124,7 @@ export function App() {
           <div
             key={idx}
             onClick={() => handleClick(idx)}
-            className={`w-[200px] h-[200px] flex items-center justify-center cursor-pointer ${cellBorders[idx]}`}
+            className={`w-[200px] h-[200px] border-zinc-100 flex items-center justify-center cursor-pointer ${cellBorders[idx]}`}
           >
             {tile === 'X' ? <Cross /> : tile === 'O' ? <Circle /> : null}
           </div>
