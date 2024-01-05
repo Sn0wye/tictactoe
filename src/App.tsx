@@ -1,8 +1,24 @@
-import { ComponentProps, useEffect, useState } from 'react';
+import { ComponentProps, useEffect, useRef, useState } from 'react';
 import './index.css';
+import { io, Socket } from 'socket.io-client';
+import {
+  type ClientToServerEvents,
+  type ServerToClientEvents
+} from '../socket';
 
 type Player = 'X' | 'O';
 type Square = Player | null;
+type MySocket = Socket<ServerToClientEvents, ClientToServerEvents>;
+
+const getSocket = () => {
+  const socket: MySocket = io('http://localhost:8080');
+
+  socket.onAny((event, ...args) => {
+    console.log(event, args);
+  });
+
+  return socket;
+};
 
 const initialBoard: Array<Square> = Array(9).fill(null);
 
@@ -12,61 +28,36 @@ export function App() {
   const [winner, setWinner] = useState<Player | null>(null);
   const [isDraw, setIsDraw] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
+  const socket = useRef<MySocket | null>(null);
+  const [player, setPlayer] = useState<Player | null>(null);
 
   useEffect(() => {
-    const checkWinner = () => {
-      const winningPositions = [
-        // horizontal
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
+    socket.current = getSocket();
 
-        // vertical
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
+    socket.current.on('gameUpdate', game => {
+      setBoard(game.board);
+      setTurn(game.turn);
+      setWinner(game.winner);
+      setIsDraw(game.isDraw);
+      setIsGameOver(game.isOver);
+    });
 
-        // diagonal
-        [0, 4, 8],
-        [2, 4, 6]
-      ];
+    socket.current.on('assignPlayer', player => {
+      setPlayer(player);
+    });
 
-      for (const positions of winningPositions) {
-        const [a, b, c] = positions;
-        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-          setWinner(board[a] as Player);
-          setIsGameOver(true);
-          return board[a] as Player;
-        }
-      }
-
-      if (board.every(tile => tile !== null)) {
-        setIsDraw(true);
-        setWinner(null);
-        setIsGameOver(true);
-        return null;
-      }
+    return () => {
+      socket.current?.disconnect();
     };
-
-    checkWinner();
-  }, [board]);
+  }, []);
 
   const handleClick = (index: number) => {
-    if (isGameOver) return;
-    // tile already filled
-    if (board[index]) return;
-
-    const newBoard = [...board];
-    newBoard[index] = turn;
-    setBoard(newBoard);
-    setTurn(turn === 'X' ? 'O' : 'X');
+    if (isGameOver || board[index]) return;
+    socket.current?.emit('makeMove', index);
   };
 
   const handleReset = () => {
-    setBoard(initialBoard);
-    setIsGameOver(false);
-    setWinner(null);
-    setIsDraw(false);
+    socket.current?.emit('resetGame');
   };
 
   return (
@@ -79,22 +70,12 @@ export function App() {
         )}
         {isGameOver && !isDraw && (
           <h1 className='text-4xl text-zinc-100 flex items-center h-12  gap-2'>
-            {winner === 'X' ? (
-              <Cross className='w-12 h-12' />
-            ) : (
-              <Circle className='w-8 h-8' />
-            )}
-            Wins
+            {winner === player ? 'You won' : 'You lost'}
           </h1>
         )}
         {!isGameOver && (
           <h1 className='text-4xl text-zinc-100 flex items-center h-12 '>
-            {turn === 'X' ? (
-              <Cross className='w-12 h-12' />
-            ) : (
-              <Circle className='w-8 h-8' />
-            )}
-            's turn
+            {player === turn ? "It's your turn" : "It's your opponent's turn"}
           </h1>
         )}
         {isGameOver && (
@@ -117,6 +98,9 @@ export function App() {
             {tile === 'X' ? <Cross /> : tile === 'O' ? <Circle /> : null}
           </div>
         ))}
+      </div>
+      <div className='absolute bottom-2 left-2 text-2xl'>
+        You are playing as {player}
       </div>
     </div>
   );
