@@ -1,6 +1,6 @@
 # Tic Tac Toe
 
-This is a Tic Tac Toe web app developed with React and Vite.
+This is a dead simple Tic Tac Toe web app developed with React and Vite.
 
 ## Prerequisites
 
